@@ -16,6 +16,7 @@ defmodule WhatshouldwewatchtonightWeb.ChannelCase do
   """
 
   use ExUnit.CaseTemplate
+  alias Ecto.Adapters.SQL.Sandbox
 
   using do
     quote do
@@ -29,10 +30,10 @@ defmodule WhatshouldwewatchtonightWeb.ChannelCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Whatshouldwewatchtonight.Repo)
+    :ok = Sandbox.checkout(Whatshouldwewatchtonight.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Whatshouldwewatchtonight.Repo, {:shared, self()})
+      Sandbox.mode(Whatshouldwewatchtonight.Repo, {:shared, self()})
     end
 
     :ok
