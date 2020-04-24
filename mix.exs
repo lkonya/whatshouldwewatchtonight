@@ -49,7 +49,7 @@ defmodule Whatshouldwewatchtonight.MixProject do
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:credo, "~> 1.4", only: :dev, runtime: false},
       {:git_hooks, "~> 0.4.0", only: :dev, runtime: false},
-      {:sobelow, "~> 0.8", only: :dev, runtime: false}
+      {:sobelow, "~> 0.10", only: :dev, runtime: false}
     ]
   end
 
