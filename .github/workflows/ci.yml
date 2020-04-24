@@ -1,0 +1,58 @@
+name: GitHub Action CI
+
+on:
+  push:
+    branches:    
+      - master
+  pull_request:
+
+jobs:
+  mix-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        otp: [22.3.2]
+        elixir: [1.10.2]
+        nodejs: [12.16.2]
+
+    services:
+      postgres:
+        image: postgres:12.2-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: whatshouldwewatchtonight_test
+        ports: 
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-elixir@v1
+        with:
+          otp-version: ${{ matrix.otp }}
+          elixir-version: ${{ matrix.elixir }}
+
+      - uses: actions/cache@v1
+        id: deps-cache
+        with:
+          path: deps
+          key: ${{ runner.os }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+          
+      - uses: actions/cache@v1
+        id: build-cache
+        with:
+          path: _build
+          key: ${{ runner.os }}-build-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+
+      - name: Install Dependencies OTP ${{ matrix.otp }} / Elixir ${{ matrix.elixir }}
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+
+      - name: Run mix test
+        env:
+          MIX_ENV: test
+        run: mix test

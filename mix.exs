@@ -45,10 +45,10 @@ defmodule Whatshouldwewatchtonight.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
 
-      # dev, test
+      # dev
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:git_hooks, "~> 0.4.0", only: [:test, :dev], runtime: false},
+      {:credo, "~> 1.4", only: :dev, runtime: false},
+      {:git_hooks, "~> 0.4.0", only: :dev, runtime: false},
       {:sobelow, "~> 0.8", only: :dev, runtime: false}
     ]
   end

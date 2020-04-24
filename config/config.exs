@@ -34,19 +34,16 @@ config :phoenix, :json_library, Jason
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
 
-if Mix.env() != :prod do
+if Mix.env() == :dev do
   config :git_hooks,
     verbose: true,
     hooks: [
       pre_commit: [
         tasks: [
           "mix clean",
-          "mix compile --warnings-as-errors",
-          "mix xref deprecated --abort-if-any",
-          "mix xref unreachable --abort-if-any",
+          "mix compile --warnings",
           "mix format --check-formatted",
           "mix credo --strict",
-          # "mix doctor --summary",
           # "mix sobelow --verbose --exit",
           "mix test"
         ]

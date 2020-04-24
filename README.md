@@ -1,3 +1,4 @@
+![](https://github.com/lkonya/whatshouldwewatchtonight/workflows/GitHub%20Action%20CI/badge.svg)
 # Whatshouldwewatchtonight
 
 To start your Phoenix server:
