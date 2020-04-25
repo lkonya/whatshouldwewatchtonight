@@ -45,36 +45,25 @@ jobs:
         with:
           path: _build
           key: ${{ runner.os }}-build-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+  deploy:
+    needs: mix-test # only run this job if the verify job succeeds
+    # only run this job if the workflow is running on the master branch
+    if: github.ref == 'refs/heads/master'
 
-      - name: Cache node modules
-        uses: actions/cache@v1
-        env:
-          cache-name: cache-node-modules
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+        # actions/checkout@v2 only checks out the latest commit,
+        # so we need to tell it to check out the entire master branch
         with:
-          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-  
-      - name: Install Dependencies OTP ${{ matrix.otp }} / Elixir ${{ matrix.elixir }}
-        run: |
-          mix local.rebar --force
-          mix local.hex --force
-          mix deps.get
+          ref: master
+          fetch-depth: 0
 
-      - name: Mix test
-        env:
-          MIX_ENV: test
-        run: mix test
-
-      - name: Release
-        env:
-          MIX_ENV: prod
-        run: |
-          npm install --prefix ./assets
-          npm run deploy --prefix ./assets
-          mix phx.digest
-          mix release
-
+      # configure the gigalixir-actions with our credentials and app name
+      - uses: mhanberg/gigalixir-action@v0.1.0
+        with:
+          GIGALIXIR_USERNAME: ${{ secrets.GIGALIXIR_USERNAME }}
+          GIGALIXIR_PASSWORD: ${{ secrets.GIGALIXIR_PASSWORD }}
+          GIGALIXIR_APP: ${{ secrets.GIGALIXIR_APP }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
