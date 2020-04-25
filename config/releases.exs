@@ -12,7 +12,8 @@ database_url =
     """
 
 config :whatshouldwewatchtonight, Whatshouldwewatchtonight.Repo,
-  # ssl: true,
+  ssl: true,
+  adapter: Ecto.Adapters.Postgres,
   url: database_url,
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "2")
 
@@ -28,14 +29,16 @@ config :whatshouldwewatchtonight, WhatshouldwewatchtonightWeb.Endpoint,
     port: String.to_integer(System.get_env("PORT") || "4000"),
     transport_options: [socket_opts: [:inet6]]
   ],
-  secret_key_base: secret_key_base
+  secret_key_base: secret_key_base,
+  url: [host: System.get_env("APP_NAME") <> ".gigalixirapp.com", port: 80],
+  server: true
 
 # ## Using releases (Elixir v1.9+)
 #
 # If you are doing OTP releases, you need to instruct Phoenix
 # to start each relevant endpoint:
 #
-#     config :whatshouldwewatchtonight, WhatshouldwewatchtonightWeb.Endpoint, server: true
+# config :whatshouldwewatchtonight, WhatshouldwewatchtonightWeb.Endpoint, server: true
 #
 # Then you can assemble a release by calling `mix release`.
 # See `mix help release` for more information.

@@ -46,13 +46,35 @@ jobs:
           path: _build
           key: ${{ runner.os }}-build-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
 
+      - name: Cache node modules
+        uses: actions/cache@v1
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+  
       - name: Install Dependencies OTP ${{ matrix.otp }} / Elixir ${{ matrix.elixir }}
         run: |
           mix local.rebar --force
           mix local.hex --force
           mix deps.get
 
-      - name: Run mix test
+      - name: Mix test
         env:
           MIX_ENV: test
         run: mix test
+
+      - name: Release
+        env:
+          MIX_ENV: prod
+        run: |
+          npm install --prefix ./assets
+          npm run deploy --prefix ./assets
+          mix phx.digest
+          mix release
+
