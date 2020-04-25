@@ -41,10 +41,10 @@ if Mix.env() == :dev do
       pre_commit: [
         tasks: [
           "mix clean",
-          "mix compile --warnings",
+          "mix compile --warnings-as-errors",
           "mix format --check-formatted",
           "mix credo --strict",
-          # "mix sobelow --verbose --exit",
+          "mix sobelow --verbose",
           "mix test"
         ]
       ]

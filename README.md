@@ -1,4 +1,5 @@
-![](https://github.com/lkonya/whatshouldwewatchtonight/workflows/GitHub%20Action%20CI/badge.svg)
+![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
+![](https://github.com/lkonya/whatshouldwewatchtonight/workflows/build/badge.svg)
 # Whatshouldwewatchtonight
 
 To start your Phoenix server:
