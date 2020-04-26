@@ -1,4 +1,4 @@
-![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
+![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)
 ![](https://github.com/lkonya/whatshouldwewatchtonight/workflows/build/badge.svg)
 # Whatshouldwewatchtonight
 
