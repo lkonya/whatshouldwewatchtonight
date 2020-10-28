@@ -38,7 +38,7 @@ defmodule Whatshouldwewatchtonight.MixProject do
       {:ecto_sql, "~> 3.4"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_dashboard, "~> 0.2.0"},
+      {:phoenix_live_dashboard, "~> 0.3.5"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.5"},
       {:gettext, "~> 0.17"},
